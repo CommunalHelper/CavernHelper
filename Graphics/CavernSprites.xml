@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprites>
+
+  <crystalbomb path="objects/cavern/crystalbomb/" start="idle">
+    <Origin x="10" y="22"/>
+    <Loop id="idle" path="idle" delay="0.08"/>
+    <Anim id="crbomb" path="crbomb" delay="0.2" frames="0-60"/>
+  </crystalbomb>
+
+</Sprites>

@@ -1,0 +1,6 @@
+- Name: CavernHelper
+  Version: 1.3.4
+  DLL: Code/bin/CavernHelper.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.1733.0
