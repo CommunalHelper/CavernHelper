@@ -1,66 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste;
+using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Celeste.Mod.CavernHelper
-{
-    class IcyFloor : Entity
-    {
-        private StaticMover staticMover;
-        private List<Sprite> tiles;
-        private float width;
+namespace CavernHelper {
+    [CustomEntity("cavern/icyfloor")]
+    [Tracked]
+    public class IcyFloor : Entity {
+        private readonly List<Sprite> tiles;
 
-        public IcyFloor(EntityData data, Vector2 offset, float _width) : base(data.Position + offset)
-        {
-            base.Depth = 1999;
-            this.width = _width;
-            base.Collider = new Hitbox(width, 2, 0f, 6);
-            base.Add(this.staticMover = new StaticMover());
-            this.tiles = this.BuildSprite();
+        public IcyFloor(EntityData data, Vector2 offset) 
+            : base(data.Position + offset) {
+            Depth = 1999;
+            Collider = new Hitbox(data.Width, 2, 0f, 6);
+            tiles = BuildSprite();
         }
 
-        public override void Added(Scene scene)
-        {
+        public override void Added(Scene scene) {
             base.Added(scene);
-            this.tiles.ForEach(delegate (Sprite t)
-            {
+            tiles.ForEach(delegate (Sprite t) {
                 t.Play("ice", false, false);
                 t.Rotation = -(float)Math.PI / 2;
             });
         }
 
-        private List<Sprite> BuildSprite()
-        {
-            List<Sprite> list = new List<Sprite>();
+        private List<Sprite> BuildSprite() {
+            List<Sprite> list = new();
             int currentWidth = 0;
-            while ((float)currentWidth < base.Width)
-            {
+            while (currentWidth < Width) {
                 string id;
-                if (currentWidth == 0)
-                {
+                if (currentWidth == 0) {
                     id = "WallBoosterTop";
+                } else if ((currentWidth + 16) > Width) {
+                    id = "WallBoosterBottom";
+                } else {
+                    id = "WallBoosterMid";
                 }
-                else
-                {
-                    if ((float)(currentWidth + 16) > base.Width)
-                    {
-                        id = "WallBoosterBottom";
-                    }
-                    else
-                    {
-                        id = "WallBoosterMid";
-                    }
-                }
+
                 Sprite sprite = GFX.SpriteBank.Create(id);
-                sprite.Position = new Vector2((float)currentWidth, 8);
+                sprite.Position = new Vector2(currentWidth, 8);
                 list.Add(sprite);
-                base.Add(sprite);
+                Add(sprite);
                 currentWidth += 8;
             }
+
             return list;
         }
     }

@@ -20,10 +20,6 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <PackageReference Include="MonoMod.RuntimeDetour" Version="22.01.04.03" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="$(CelestePrefix)\Celeste.exe" />
         <Reference Include="$(CelestePrefix)\MMHOOK_Celeste.dll" />
     </ItemGroup>
@@ -50,7 +46,7 @@
     </Target>
     
     <PropertyGroup>
-        <PathMap>$(MSBuildProjectDirectory)=AdventureHelper/</PathMap>
+        <PathMap>$(MSBuildProjectDirectory)=CavernHelper/</PathMap>
     </PropertyGroup>
     
     <PropertyGroup>
