@@ -7,6 +7,7 @@ namespace CavernHelper {
         public static SpriteBank SpriteBank;
 
         public override void Load() {
+            CavernInterop.Load();
             On.Celeste.Player.BoostBegin += Player_BoostBegin;
         }
 
