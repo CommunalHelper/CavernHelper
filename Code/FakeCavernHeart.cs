@@ -6,7 +6,7 @@ using System;
 
 namespace CavernHelper {
     [CustomEntity("cavern/fakecavernheart")]
-    public class FakeCavernHeart : Entity {
+    internal class FakeCavernHeart : Entity {
         private Sprite sprite;
         private Wiggler ScaleWiggler;
         private Wiggler moveWiggler;
