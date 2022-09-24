@@ -5,8 +5,8 @@ using Monocle;
 using System;
 
 namespace CavernHelper {
-    [CustomEntity("cavern/crystalbomb")]
     [Tracked]
+    [CustomEntity("cavern/crystalbomb")]
     public class CrystalBomb : Actor {
         public Holdable Hold;
         public Vector2 Speed;

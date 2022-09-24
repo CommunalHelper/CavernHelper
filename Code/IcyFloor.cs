@@ -4,11 +4,10 @@ using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CavernHelper {
-    [CustomEntity("cavern/icyfloor")]
     [Tracked]
+    [CustomEntity("cavern/icyfloor")]
     public class IcyFloor : Entity {
         private readonly List<Sprite> tiles;
 
