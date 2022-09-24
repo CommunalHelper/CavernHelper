@@ -6,6 +6,7 @@ using System;
 
 namespace CavernHelper {
     [CustomEntity("cavern/crystalbomb")]
+    [Tracked]
     public class CrystalBomb : Actor {
         public Holdable Hold;
         public Vector2 Speed;
@@ -315,7 +316,6 @@ namespace CavernHelper {
 
         private void Explode() {
             if (!exploded) {
-                Collider = new Circle(10f, 0f, 0f);
                 exploding = false;
                 explodeTimer = 0f;
 
@@ -344,6 +344,10 @@ namespace CavernHelper {
                     foreach (DashBlock dashBlock in CollideAll<DashBlock>()) {
                         dashBlock.Break(Position, Position - dashBlock.Position, true, true);
                     }
+                }
+
+                foreach (CrystalBombExplosionCollider ec in Scene.Tracker.GetComponents<CrystalBombExplosionCollider>()) {
+                    ec.Check(this);
                 }
 
                 if (!respawnOnExplode) {
