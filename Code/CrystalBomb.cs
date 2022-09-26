@@ -40,7 +40,7 @@ namespace Celeste.Mod.CavernHelper {
         public CrystalBomb(EntityData data, Vector2 offset)
             : base(data.Position + offset) {
             Depth = 100;
-            maxRespawnTime = data.Float("respawnTime", 5f);
+            maxRespawnTime = data.Float("respawnTime", 2f);
             maxExplodeTimer = data.Float("explodeTime", 1f);
             explodeOnSpawn = data.Bool("explodeOnSpawn", false);
             respawnOnExplode = data.Bool("respawnOnExplode", true);
