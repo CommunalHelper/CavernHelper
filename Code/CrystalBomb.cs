@@ -177,17 +177,20 @@ namespace Celeste.Mod.CavernHelper {
                     MoveH(Speed.X * Engine.DeltaTime, onCollideH, null);
                     MoveV(Speed.Y * Engine.DeltaTime, onCollideV, null);
                     if (Left < level.Bounds.Left) {
+                        Left = level.Bounds.Left;
                         OnCollideH(new CollisionData {
                             Direction = -Vector2.UnitX
                         });
                     } else if (Right > level.Bounds.Right) {
+                        Right = level.Bounds.Right;
                         OnCollideH(new CollisionData {
                             Direction = Vector2.UnitX
                         });
                     }
 
                     if (Top < level.Bounds.Top) {
-                        OnCollideH(new CollisionData {
+                        Top = level.Bounds.Top;
+                        OnCollideV(new CollisionData {
                             Direction = -Vector2.UnitY
                         });
                     } else if (Bottom > level.Bounds.Bottom + 4) {
@@ -196,10 +199,10 @@ namespace Celeste.Mod.CavernHelper {
                             return;
                         }
                     }
+                }
 
-                    if (!legacyMode) {
-                        Hold.CheckAgainstColliders();
-                    }
+                if (!legacyMode) {
+                    Hold.CheckAgainstColliders();
                 }
             } else {
                 if (respawnTime < maxRespawnTime) {
@@ -367,6 +370,12 @@ namespace Celeste.Mod.CavernHelper {
 
                 foreach (CrystalBombExplosionCollider ec in Scene.Tracker.GetComponents<CrystalBombExplosionCollider>()) {
                     ec.Check(this);
+                }
+
+                if (!legacyMode) {
+                    foreach (TouchSwitch touchSwitch in CollideAll<TouchSwitch>()) {
+                        touchSwitch.TurnOn();
+                    }
                 }
 
                 if (!respawnOnExplode) {
