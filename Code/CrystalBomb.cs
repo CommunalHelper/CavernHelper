@@ -1,10 +1,11 @@
-﻿using Celeste;
-using Celeste.Mod.Entities;
+﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 using System;
+using System.Linq;
 
-namespace CavernHelper {
+namespace Celeste.Mod.CavernHelper {
     [Tracked]
     [CustomEntity("cavern/crystalbomb")]
     public class CrystalBomb : Actor {
@@ -21,6 +22,7 @@ namespace CavernHelper {
         private readonly bool explodeOnSpawn = false;
         private readonly bool respawnOnExplode = true;
         private readonly bool breakDashBlocks = false;
+        private readonly bool legacyMode = true;
 
         private BirdTutorialGui tutorialGui;
         private Vector2 prevLiftSpeed;
@@ -35,7 +37,7 @@ namespace CavernHelper {
         private bool shouldShowTutorial = true;
         private bool playedFuseSound = false;
 
-        public CrystalBomb(EntityData data, Vector2 offset) 
+        public CrystalBomb(EntityData data, Vector2 offset)
             : base(data.Position + offset) {
             Depth = 100;
             maxRespawnTime = data.Float("respawnTime", 5f);
@@ -43,6 +45,10 @@ namespace CavernHelper {
             explodeOnSpawn = data.Bool("explodeOnSpawn", false);
             respawnOnExplode = data.Bool("respawnOnExplode", true);
             breakDashBlocks = data.Bool("breakDashBlocks", false);
+
+            // Legacy behavior did not call Holdable.CheckAgainstColliders()
+            // Defaults to true for old placements, false for new ones
+            legacyMode = data.Bool("legacyMode", !data.Has("legacyMode"));
 
             pushRadius = new Circle(40f, 0f, 0f);
             hitBox = new Hitbox(8f, 10f, -4f, -10f);
@@ -91,8 +97,18 @@ namespace CavernHelper {
             Level level = SceneAs<Level>();
             Player player = Scene.Tracker.GetEntity<Player>();
             if (!exploded) {
-                if (!Hold.IsHeld && tutorialGui != null) {
-                    tutorialGui.Open = shouldShowTutorial && player != null && Vector2.Distance(player.Position, Position) < 64;
+                if (!Hold.IsHeld) {
+                    if (legacyMode) {
+                        foreach (Spring spring in Scene.Entities.OfType<Spring>()) {
+                            if (CollideCheck(spring) && HitSpring(spring)) {
+                                DynamicData.For(spring).Invoke("BounceAnimate");
+                            }
+                        }
+                    }
+
+                    if (tutorialGui != null) {
+                        tutorialGui.Open = shouldShowTutorial && player != null && Vector2.Distance(player.Position, Position) < 64;
+                    }
                 }
 
                 if (exploding) {
@@ -181,7 +197,9 @@ namespace CavernHelper {
                         }
                     }
 
-                    Hold.CheckAgainstColliders();
+                    if (!legacyMode) {
+                        Hold.CheckAgainstColliders();
+                    }
                 }
             } else {
                 if (respawnTime < maxRespawnTime) {
@@ -209,23 +227,24 @@ namespace CavernHelper {
 
         private bool HitSpring(Spring spring) {
             if (!Hold.IsHeld) {
-                if (spring.Orientation == Spring.Orientations.Floor) {
+                if (spring.Orientation == Spring.Orientations.Floor && Speed.Y >= 0f) {
                     Speed.X *= 0.5f;
                     Speed.Y = -160f;
                     noGravityTimer = 0.15f;
                     return true;
-                } else if (spring.Orientation == Spring.Orientations.WallLeft) {
+                } else if (spring.Orientation == Spring.Orientations.WallLeft && Speed.X <= 0f) {
                     Speed.X = 240f;
                     Speed.Y = -140f;
                     noGravityTimer = 0.15f;
                     return true;
-                } else if (spring.Orientation == Spring.Orientations.WallRight) {
+                } else if (spring.Orientation == Spring.Orientations.WallRight && Speed.X >= 0f) {
                     Speed.X = -240f;
                     Speed.Y = -140f;
                     noGravityTimer = 0.15f;
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -297,7 +316,7 @@ namespace CavernHelper {
                 direction = 3.14159274f;
                 position = new Vector2(Right, Y - 4f);
                 positionRange = Vector2.UnitY * 6f;
-            } else if(dir.X < 0f) {
+            } else if (dir.X < 0f) {
                 direction = 0f;
                 position = new Vector2(Left, Y - 4f);
                 positionRange = Vector2.UnitY * 6f;
@@ -314,7 +333,7 @@ namespace CavernHelper {
             SceneAs<Level>().Particles.Emit(TheoCrystal.P_Impact, 12, position, positionRange, direction);
         }
 
-        private void Explode() {
+        internal void Explode() {
             if (!exploded) {
                 exploding = false;
                 explodeTimer = 0f;
