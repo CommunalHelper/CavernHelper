@@ -5,9 +5,6 @@ local crystalBomb = {}
 
 crystalBomb.name = "cavern/crystalbomb"
 crystalBomb.depth = -9999
-crystalBomb.texture = "objects/cavern/crystalBomb/idle00"
-crystalBomb.justification = {0.5, 0.5}
-
 crystalBomb.placements = {
     name = "bomb",
     data = {
@@ -20,9 +17,20 @@ crystalBomb.placements = {
     }
 }
 
+local offsetY = -10
+local texture = "objects/cavern/crystalBomb/idle00"
+
+function crystalBomb.sprite(room, entity)
+    local sprite = drawableSprite.fromTexture(texture, entity)
+
+    sprite.y += offsetY
+
+    return sprite
+end
+
 function crystalBomb.rectangle(room, entity)
     local x, y = entity.x or 0, entity.y or 0
-    return utils.rectangle(x - 8, y - 3, 17, 13)
+    return utils.rectangle(x - 8, y - 13, 17, 13)
 end
 
 return crystalBomb

@@ -7,7 +7,6 @@ icyFloor.name = "cavern/icyfloor"
 icyFloor.depth = -9999
 icyFloor.canResize = {true, false}
 icyFloor.minimumSize = {8, 0}
-
 icyFloor.placements = {
     name = "icy_floor",
     placementType = "rectangle",
