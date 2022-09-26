@@ -12,8 +12,5 @@ entities.cavern/crystalbomb.attributes.description.legacyMode=Whether it should 
 # Icy Floor 
 entities.cavern/icyfloor.placements.name.Icyfloor=Icy Floor
 
-# Fake Cavern Heart
-entities.cavern/fakecavernheart.placements.name.FakeCavernHeart=Fake Heart
-
 # Crystal Bomb Detonator
 entities.cavern/crystalBombDetonator.placements.name.crystal_bomb_detonator=Crystal Bomb Detonator

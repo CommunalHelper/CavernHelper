@@ -22,10 +22,6 @@ const placements = Ahorn.PlacementDict(
         IcyFloor,
         "rectangle",
         Dict{String, Any}()
-    ),
-    "Fake Cavern Heart (Cavern)" => Ahorn.EntityPlacement(
-        FakeCavernHeart,
-        "point"
     )
 )
 
