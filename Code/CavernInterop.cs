@@ -3,7 +3,7 @@ using Monocle;
 using MonoMod.ModInterop;
 using System;
 
-namespace CavernHelper {
+namespace Celeste.Mod.CavernHelper {
     [ModExportName("CavernHelper")]
     public static class CavernInterop {
         internal static void Load() {

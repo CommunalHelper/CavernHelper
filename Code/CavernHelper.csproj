@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net452</TargetFramework>
         <AssemblyName>CavernHelper</AssemblyName>
-        <RootNamespace>CavernHelper</RootNamespace>
+        <RootNamespace>Celeste.Mod.CavernHelper</RootNamespace>
         <LangVersion>latest</LangVersion>
         <CelestePrefix Condition="'$(CelestePrefix)' == '' And Exists('..\..\Celeste.exe')">..\..</CelestePrefix>
         <CelestePrefix Condition="'$(CelestePrefix)' == '' And Exists('..\..\..\Celeste.exe')">..\..\..</CelestePrefix>

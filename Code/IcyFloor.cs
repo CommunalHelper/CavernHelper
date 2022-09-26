@@ -1,17 +1,16 @@
-﻿using Celeste;
-using Celeste.Mod.Entities;
+﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections.Generic;
 
-namespace CavernHelper {
+namespace Celeste.Mod.CavernHelper {
     [Tracked]
     [CustomEntity("cavern/icyfloor")]
     public class IcyFloor : Entity {
         private readonly List<Sprite> tiles;
 
-        public IcyFloor(EntityData data, Vector2 offset) 
+        public IcyFloor(EntityData data, Vector2 offset)
             : base(data.Position + offset) {
             Depth = 1999;
             Collider = new Hitbox(data.Width, 2, 0f, 6);

@@ -1,17 +1,17 @@
-﻿using Celeste;
-using Celeste.Mod;
-using Monocle;
+﻿using Monocle;
 
-namespace CavernHelper {
+namespace Celeste.Mod.CavernHelper {
     public class CavernModule : EverestModule {
         public static SpriteBank SpriteBank;
 
         public override void Load() {
             CavernInterop.Load();
+            CrystalBombDetonatorRenderer.Load();
             On.Celeste.Player.BoostBegin += Player_BoostBegin;
         }
 
         public override void Unload() {
+            CrystalBombDetonatorRenderer.Unload();
             On.Celeste.Player.BoostBegin -= Player_BoostBegin;
         }
 

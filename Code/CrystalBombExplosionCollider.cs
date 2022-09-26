@@ -1,9 +1,8 @@
-﻿using CavernHelper;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 
-namespace CavernHelper {
+namespace Celeste.Mod.CavernHelper {
     [Tracked]
     public class CrystalBombExplosionCollider : Component {
         public Action<Vector2> OnExplode;
@@ -17,14 +16,16 @@ namespace CavernHelper {
 
         internal void Check(CrystalBomb bomb) {
             if (OnExplode != null) {
-                Collider collider = Entity.Collider;
+                Collider origCollider = Entity.Collider;
                 if (Collider != null) {
                     Entity.Collider = Collider;
                 }
+
                 if (bomb.CollideCheck(Entity)) {
                     OnExplode.Invoke(bomb.Position);
                 }
-                Entity.Collider = collider;
+
+                Entity.Collider = origCollider;
             }
         }
     }
