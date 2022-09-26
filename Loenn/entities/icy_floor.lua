@@ -1,14 +1,15 @@
 local drawableSprite = require("structs.drawable_sprite")
 local utils = require("utils")
-local icyfloor = {}
 
-icyfloor.name = "cavern/icyfloor"
-icyfloor.depth = -9999
-icyfloor.canResize = {true, false}
-icyfloor.minimumSize = {8, 0}
-icyfloor.placements = 
-{
-    name = "Icyfloor",
+local icyFloor = {}
+
+icyFloor.name = "cavern/icyfloor"
+icyFloor.depth = -9999
+icyFloor.canResize = {true, false}
+icyFloor.minimumSize = {8, 0}
+
+icyFloor.placements = {
+    name = "icy_floor",
     placementType = "rectangle",
     data = {
         width = 8
@@ -19,7 +20,7 @@ local leftTexture = "objects/wallBooster/iceTop00"
 local midTexture = "objects/wallBooster/iceMid00"
 local rightTexture = "objects/wallBooster/iceBottom00"
 
-function icyfloor.sprite(room, entity)
+function icyFloor.sprite(room, entity)
     local sprites = {}
 
     local width = entity.width or 8
@@ -52,9 +53,9 @@ function icyfloor.sprite(room, entity)
     return sprites
 end
 
-function icyfloor.rectangle(room, entity)
+function icyFloor.rectangle(room, entity)
     local x, y = entity.x or 0, entity.y or 0
     return utils.rectangle(x, y + 5, entity.width or 8, 3)
 end
 
-return icyfloor
+return icyFloor
