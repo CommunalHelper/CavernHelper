@@ -6,12 +6,12 @@ namespace Celeste.Mod.CavernHelper {
 
         public override void Load() {
             CavernInterop.Load();
-            CrystalBombDetonatorRenderer.Load();
+            CrystalBombFieldRenderer.Load();
             On.Celeste.Player.BoostBegin += Player_BoostBegin;
         }
 
         public override void Unload() {
-            CrystalBombDetonatorRenderer.Unload();
+            CrystalBombFieldRenderer.Unload();
             On.Celeste.Player.BoostBegin -= Player_BoostBegin;
         }
 

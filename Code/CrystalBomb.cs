@@ -33,7 +33,7 @@ namespace Celeste.Mod.CavernHelper {
         private float frameCount;
         private float explodeTimer = 0f;
         private bool exploded;
-        private bool exploding = false;
+        private bool activated = false;
         private bool shouldShowTutorial = true;
         private bool playedFuseSound = false;
 
@@ -74,7 +74,7 @@ namespace Celeste.Mod.CavernHelper {
             base.Awake(scene);
             startPos = Position;
             if (explodeOnSpawn) {
-                exploding = true;
+                activated = true;
             }
 
             if (SceneAs<Level>().Session.Level == "a-05tut") {
@@ -97,6 +97,16 @@ namespace Celeste.Mod.CavernHelper {
             Level level = SceneAs<Level>();
             Player player = Scene.Tracker.GetEntity<Player>();
             if (!exploded) {
+                foreach (CrystalBombField field in Scene.Tracker.GetEntities<CrystalBombField>()) {
+                    field.Collidable = true;
+                    if (CollideCheck(field)) {
+                        field.Collidable = false;
+                        Explode();                        
+                        return;
+                    }
+                    field.Collidable = false;
+                }
+
                 if (!Hold.IsHeld) {
                     if (legacyMode) {
                         foreach (Spring spring in Scene.Entities.OfType<Spring>()) {
@@ -111,7 +121,7 @@ namespace Celeste.Mod.CavernHelper {
                     }
                 }
 
-                if (exploding) {
+                if (activated) {
                     if (!playedFuseSound) {
                         Audio.Play(SFX.game_04_arrowblock_debris, Position);
                         playedFuseSound = true;
@@ -216,7 +226,7 @@ namespace Celeste.Mod.CavernHelper {
                     sprite.Play("idle", true, false);
                     Position = startPos;
                     if (explodeOnSpawn) {
-                        exploding = true;
+                        activated = true;
                     }
                 }
             }
@@ -257,7 +267,7 @@ namespace Celeste.Mod.CavernHelper {
             }
 
             Speed = Vector2.Zero;
-            exploding = true;
+            activated = true;
         }
 
         private void OnRelease(Vector2 force) {
@@ -338,10 +348,10 @@ namespace Celeste.Mod.CavernHelper {
 
         internal void Explode() {
             if (!exploded) {
-                exploding = false;
+                exploded = true;
+                activated = false;
                 explodeTimer = 0f;
-
-                Collider = pushRadius;
+                
                 sprite.Play("idle", true, false);
                 SceneAs<Level>().Displacement.AddBurst(Position, 0.35f, 8f, 48f, 0.25f, null, null);
                 RecoverBlast.Spawn(Position);
@@ -349,6 +359,7 @@ namespace Celeste.Mod.CavernHelper {
                     Audio.Play(SFX.game_06_fall_spike_smash, Position);
                 }
 
+                Collider = pushRadius;
                 if (!CollideCheck<CassetteBlock>()) {
                     CrystalDebris.Burst(Position + (Vector2.UnitY * -10f), Calc.HexToColor("639bff"), false, 32);
                 }
@@ -382,22 +393,15 @@ namespace Celeste.Mod.CavernHelper {
                     RemoveSelf();
                 }
 
-                exploded = true;
+                if (Hold.IsHeld) {
+                    Hold.Holder.Drop();
+                }
+
                 Collider = hitBox;
                 Visible = false;
                 Collidable = false;
-                Speed = Vector2.Zero;
-                if (player != null) {
-                    if (player.Holding != null) {
-                        if (player.Holding == Hold) {
-                            Hold.Release(Vector2.Zero);
-                            player.Holding = null;
-                            player.Get<Sprite>().Update();
-                        }
-                    }
-                }
-
                 Position = startPos;
+                Speed = Vector2.Zero;
             }
         }
 

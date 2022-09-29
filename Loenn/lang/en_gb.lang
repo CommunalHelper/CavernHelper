@@ -12,5 +12,5 @@ entities.cavern/crystalbomb.attributes.description.legacyMode=If checked, disabl
 # Icy Floor 
 entities.cavern/icyfloor.placements.name.icy_floor=Icy Floor
 
-# Crystal Bomb Detonator
-entities.cavern/crystalBombDetonator.placements.name.detonator=Crystal Bomb Detonator
+# Crystal Bomb Field
+entities.cavern/crystalBombField.placements.name.bomb_field=Crystal Bomb Field

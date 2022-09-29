@@ -5,33 +5,20 @@ using System.Collections.Generic;
 
 namespace Celeste.Mod.CavernHelper {
     [Tracked]
-    public class CrystalBombDetonatorRenderer : Entity {
-        private readonly List<CrystalBombDetonator> trackedFields = new();
+    public class CrystalBombFieldRenderer : Entity {
+        private readonly List<CrystalBombField> trackedFields = new();
         private readonly List<Edge> fieldEdges = new();
         private VirtualMap<bool> tiles;
         private Rectangle levelTileBounds;
         private bool dirty;
 
-        public CrystalBombDetonatorRenderer() {
+        public CrystalBombFieldRenderer() {
             Tag = Tags.Global | Tags.TransitionUpdate;
             Depth = 0;
             Add(new CustomBloom(OnRenderBloom));
         }
 
-        public static void Load() {
-            On.Celeste.LevelLoader.LoadingThread += LevelLoader_LoadingThread;
-        }
-
-        public static void Unload() {
-            On.Celeste.LevelLoader.LoadingThread -= LevelLoader_LoadingThread;
-        }
-
-        private static void LevelLoader_LoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
-            self.Level.Add(new CrystalBombDetonatorRenderer());
-            orig(self);
-        }
-
-        public void Track(CrystalBombDetonator block) {
+        public void Track(CrystalBombField block) {
             trackedFields.Add(block);
             if (tiles == null) {
                 levelTileBounds = (Scene as Level).TileBounds;
@@ -47,7 +34,7 @@ namespace Celeste.Mod.CavernHelper {
             dirty = true;
         }
 
-        public void Untrack(CrystalBombDetonator block) {
+        public void Untrack(CrystalBombField block) {
             trackedFields.Remove(block);
             if (trackedFields.Count <= 0) {
                 tiles = null;
@@ -87,6 +74,19 @@ namespace Celeste.Mod.CavernHelper {
             }
         }
 
+        internal static void Load() {
+            On.Celeste.LevelLoader.LoadingThread += LevelLoader_LoadingThread;
+        }
+
+        internal static void Unload() {
+            On.Celeste.LevelLoader.LoadingThread -= LevelLoader_LoadingThread;
+        }
+
+        private static void LevelLoader_LoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
+            self.Level.Add(new CrystalBombFieldRenderer());
+            orig(self);
+        }
+
         private void RebuildEdges() {
             dirty = false;
             fieldEdges.Clear();
@@ -99,7 +99,7 @@ namespace Celeste.Mod.CavernHelper {
                     new Point(1, 0)
                 };
 
-                foreach (CrystalBombDetonator crystalBombDetonator in trackedFields) {
+                foreach (CrystalBombField crystalBombDetonator in trackedFields) {
                     for (int xTile = (int)crystalBombDetonator.X / 8; xTile < (crystalBombDetonator.Right / 8f); xTile++) {
                         for (int yTile = (int)crystalBombDetonator.Y / 8; yTile < (crystalBombDetonator.Bottom / 8f); yTile++) {
                             foreach (Point point in array) {
@@ -129,7 +129,7 @@ namespace Celeste.Mod.CavernHelper {
         }
 
         private void OnRenderBloom() {
-            foreach (CrystalBombDetonator crystalBombDetonator in trackedFields) {
+            foreach (CrystalBombField crystalBombDetonator in trackedFields) {
                 if (crystalBombDetonator.Visible) {
                     Draw.Rect(crystalBombDetonator.X, crystalBombDetonator.Y, crystalBombDetonator.Width, crystalBombDetonator.Height, Color.Purple);
                 }
@@ -153,7 +153,7 @@ namespace Celeste.Mod.CavernHelper {
             }
 
             Color color = Color.Purple * 0.45f;
-            foreach (CrystalBombDetonator crystalBombDetonator in trackedFields) {
+            foreach (CrystalBombField crystalBombDetonator in trackedFields) {
                 if (crystalBombDetonator.Visible) {
                     Draw.Rect(crystalBombDetonator.Collider, color);
                 }
@@ -173,7 +173,7 @@ namespace Celeste.Mod.CavernHelper {
         }
 
         private class Edge {
-            public CrystalBombDetonator Parent;
+            public CrystalBombField Parent;
             public bool Visible = true;
             public Vector2 A;
             public Vector2 B;
@@ -184,7 +184,7 @@ namespace Celeste.Mod.CavernHelper {
             public float[] Wave;
             public float Length;
 
-            public Edge(CrystalBombDetonator parent, Vector2 a, Vector2 b) {
+            public Edge(CrystalBombField parent, Vector2 a, Vector2 b) {
                 Parent = parent;
                 A = a;
                 B = b;

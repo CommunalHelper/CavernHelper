@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace Celeste.Mod.CavernHelper {
     [Tracked]
-    [CustomEntity("cavern/crystalBombDetonator")]
-    public class CrystalBombDetonator : Solid {
+    [CustomEntity("cavern/crystalBombField")]
+    public class CrystalBombField : Solid {
         public float Flash = 0f;
         public float Solidify = 0f;
         public bool Flashing = false;
@@ -18,10 +18,10 @@ namespace Celeste.Mod.CavernHelper {
         };
 
         private readonly List<Vector2> particles = new();
-        private readonly List<CrystalBombDetonator> adjacent = new();
+        private readonly List<CrystalBombField> adjacent = new();
         private float solidifyDelay = 0f;
 
-        public CrystalBombDetonator(Vector2 position, float width, float height)
+        public CrystalBombField(Vector2 position, float width, float height)
             : base(position, width, height, false) {
             Collidable = false;
             for (int num = 0; num < Width * Height / 16f; num++) {
@@ -29,18 +29,18 @@ namespace Celeste.Mod.CavernHelper {
             }
         }
 
-        public CrystalBombDetonator(EntityData data, Vector2 offset)
+        public CrystalBombField(EntityData data, Vector2 offset)
             : this(data.Position + offset, data.Width, data.Height) {
         }
 
         public override void Added(Scene scene) {
             base.Added(scene);
-            scene.Tracker.GetEntity<CrystalBombDetonatorRenderer>().Track(this);
+            scene.Tracker.GetEntity<CrystalBombFieldRenderer>().Track(this);
         }
 
         public override void Removed(Scene scene) {
             base.Removed(scene);
-            scene.Tracker.GetEntity<CrystalBombDetonatorRenderer>().Untrack(this);
+            scene.Tracker.GetEntity<CrystalBombFieldRenderer>().Untrack(this);
         }
 
         public override void Update() {
@@ -64,8 +64,6 @@ namespace Celeste.Mod.CavernHelper {
             }
 
             base.Update();
-
-            CheckForBombs();
         }
 
         public void OnTriggerDetonation() {
@@ -75,7 +73,7 @@ namespace Celeste.Mod.CavernHelper {
             Flashing = true;
             Scene.CollideInto(new Rectangle((int)X, (int)Y - 2, (int)Width, (int)Height + 4), adjacent);
             Scene.CollideInto(new Rectangle((int)X - 2, (int)Y, (int)Width + 4, (int)Height), adjacent);
-            foreach (CrystalBombDetonator crystalBombDetonator in adjacent) {
+            foreach (CrystalBombField crystalBombDetonator in adjacent) {
                 if (!crystalBombDetonator.Flashing) {
                     crystalBombDetonator.OnTriggerDetonation();
                 }
@@ -92,15 +90,6 @@ namespace Celeste.Mod.CavernHelper {
 
             if (Flashing) {
                 Draw.Rect(Collider, Color.Purple * Flash * 0.5f);
-            }
-        }
-
-        private void CheckForBombs() {
-            foreach (CrystalBomb bomb in CollideAll<CrystalBomb>()) {
-                bomb.Explode();
-                if (!Flashing) {
-                    OnTriggerDetonation();
-                }
             }
         }
     }

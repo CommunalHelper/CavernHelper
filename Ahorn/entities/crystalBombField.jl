@@ -1,20 +1,20 @@
-module CavernCrystalBombDetonator
+module CavernCrystalBombField
 
 using ..Ahorn, Maple
 
-@mapdef Entity "cavern/crystalBombDetonator" CrystalBombDetonator(x::Integer, y::Integer, width::Integer=Maple.defaultBlockWidth, height::Integer=Maple.defaultBlockHeight)
+@mapdef Entity "cavern/crystalBombField" CrystalBombField(x::Integer, y::Integer, width::Integer=Maple.defaultBlockWidth, height::Integer=Maple.defaultBlockHeight)
 
 const placements = Ahorn.PlacementDict(
     "Crystal Bomb Detonation Field (Cavern Helper)" => Ahorn.EntityPlacement(
-        CrystalBombDetonator,
+        CrystalBombField,
         "rectangle"
     ),
 )
 
-Ahorn.minimumSize(entity::CrystalBombDetonator) = 8, 8
-Ahorn.resizable(entity::CrystalBombDetonator) = true, true
+Ahorn.minimumSize(entity::CrystalBombField) = 8, 8
+Ahorn.resizable(entity::CrystalBombField) = true, true
 
-function Ahorn.selection(entity::CrystalBombDetonator)
+function Ahorn.selection(entity::CrystalBombField)
     x, y = Ahorn.position(entity)
 
     width = Int(get(entity.data, "width", 8))
@@ -23,7 +23,7 @@ function Ahorn.selection(entity::CrystalBombDetonator)
     return Ahorn.Rectangle(x, y, width, height)
 end
 
-function Ahorn.render(ctx::Ahorn.Cairo.CairoContext, entity::CrystalBombDetonator, room::Maple.Room)
+function Ahorn.render(ctx::Ahorn.Cairo.CairoContext, entity::CrystalBombField, room::Maple.Room)
     width = Int(get(entity.data, "width", 32))
     height = Int(get(entity.data, "height", 32))
     
