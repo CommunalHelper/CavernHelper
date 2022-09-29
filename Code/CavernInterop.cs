@@ -16,11 +16,5 @@ namespace Celeste.Mod.CavernHelper {
         public static Component GetCrystalBombExplosionCollider(Action<Vector2> action, Collider collider = null) {
             return new CrystalBombExplosionCollider(action, collider);
         }
-
-        // Returns whether or not an entity is touching an Icy Floor.
-        //   Entity entity: the entity to check.
-        public static bool IsOnIcyFloor(Entity entity) {
-            return entity.CollideCheck<IcyFloor>();
-        }
     }
 }
