@@ -11,11 +11,13 @@ const placements = Ahorn.PlacementDict(
     )
 )
 
+sprite = "objects/cavern/crystalbomb/idle00.png"
+
 function Ahorn.selection(entity::CrystalBomb)
     x, y = Ahorn.position(entity)
-    return Ahorn.Rectangle(x - 10, y - 7, 19, 15)
+    return Ahorn.Rectangle(x - 10, y - 14, 19, 15)
 end
 
-Ahorn.render(ctx::Ahorn.Cairo.CairoContext, entity::CrystalBomb) = Ahorn.drawSprite(ctx, "objects/cavern/crystalbomb/idle00.png", 0, -3, jx=0.5, jy=0.5)
+Ahorn.render(ctx::Ahorn.Cairo.CairoContext, entity::CrystalBomb) = Ahorn.drawSprite(ctx, sprite, 0, -10)
 
 end
