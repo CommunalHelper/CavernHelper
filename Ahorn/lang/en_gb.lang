@@ -4,4 +4,4 @@ placements.entities.cavern/crystalbomb.tooltips.explodeTime=Time it takes to exp
 placements.entities.cavern/crystalbomb.tooltips.explodeOnSpawn=Whether it should prime instantly without being touched.
 placements.entities.cavern/crystalbomb.tooltips.respawnOnExplode=Whether it should respawn after exploding.
 placements.entities.cavern/crystalbomb.tooltips.breakDashBlocks=Whether it should break dash blocks in addition to temple blocks.
-placements.entities.cavern/crystalbomb.tooltips.legacyMode=If checked, disables holdable collider checks (touch switch collection, seeker interaction, etc).
+placements.entities.cavern/crystalbomb.tooltips.legacyMode=If checked, disables holdable collider checks (touch switch collection, etc).\nAlso makes bombs disappear on screen transition.

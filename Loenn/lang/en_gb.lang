@@ -7,7 +7,7 @@ entities.cavern/crystalbomb.attributes.description.explodeTime=Time it takes to 
 entities.cavern/crystalbomb.attributes.description.explodeOnSpawn=Whether it should prime instantly without being touched.
 entities.cavern/crystalbomb.attributes.description.respawnOnExplode=Whether it should respawn after exploding.
 entities.cavern/crystalbomb.attributes.description.breakDashBlocks=Whether it should break dash blocks in addition to temple blocks.
-entities.cavern/crystalbomb.attributes.description.legacyMode=If checked, disables holdable collider checks (touch switch collection, seeker interaction, etc).
+entities.cavern/crystalbomb.attributes.description.legacyMode=If checked, disables holdable collider checks (touch switch collection, etc).\nAlso makes bombs disappear on screen transition.
 
 # Icy Floor 
 entities.cavern/icyfloor.placements.name.icy_floor=Icy Floor
