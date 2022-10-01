@@ -27,6 +27,7 @@ namespace Celeste.Mod.CavernHelper {
         private BirdTutorialGui tutorialGui;
         private Vector2 prevLiftSpeed;
         private Vector2 startPos;
+        public string startLevel;
         private float noGravityTimer;
         private float hardVerticalHitSoundCooldown;
         private float respawnTime = 0f;
@@ -73,6 +74,7 @@ namespace Celeste.Mod.CavernHelper {
         public override void Awake(Scene scene) {
             base.Awake(scene);
             startPos = Position;
+            startLevel = SceneAs<Level>().Session.Level;
             if (explodeOnSpawn) {
                 activated = true;
             }
@@ -240,17 +242,17 @@ namespace Celeste.Mod.CavernHelper {
 
         private bool HitSpring(Spring spring) {
             if (!Hold.IsHeld) {
-                if (spring.Orientation == Spring.Orientations.Floor && Speed.Y >= 0f) {
+                if (spring.Orientation == Spring.Orientations.Floor && (legacyMode || Speed.Y >= 0f)) {
                     Speed.X *= 0.5f;
                     Speed.Y = -160f;
                     noGravityTimer = 0.15f;
                     return true;
-                } else if (spring.Orientation == Spring.Orientations.WallLeft && Speed.X <= 0f) {
+                } else if (spring.Orientation == Spring.Orientations.WallLeft && (legacyMode || Speed.X <= 0f)) {
                     Speed.X = 240f;
                     Speed.Y = -140f;
                     noGravityTimer = 0.15f;
                     return true;
-                } else if (spring.Orientation == Spring.Orientations.WallRight && Speed.X >= 0f) {
+                } else if (spring.Orientation == Spring.Orientations.WallRight && (legacyMode || Speed.X >= 0f)) {
                     Speed.X = -240f;
                     Speed.Y = -140f;
                     noGravityTimer = 0.15f;
@@ -266,6 +268,10 @@ namespace Celeste.Mod.CavernHelper {
                 shouldShowTutorial = false;
             }
 
+            if (!legacyMode) {
+                AddTag(Tags.Persistent);
+            }
+
             Speed = Vector2.Zero;
             activated = true;
         }
@@ -274,6 +280,8 @@ namespace Celeste.Mod.CavernHelper {
             if (force.X != 0f && force.Y == 0f) {
                 force.Y = -0.4f;
             }
+
+            RemoveTag(Tags.Persistent);
 
             Speed = force * 200f;
             if (Speed != Vector2.Zero) {
@@ -389,12 +397,12 @@ namespace Celeste.Mod.CavernHelper {
                     }
                 }
 
-                if (!respawnOnExplode) {
-                    RemoveSelf();
-                }
-
                 if (Hold.IsHeld) {
                     Hold.Holder.Drop();
+                }
+
+                if (!respawnOnExplode || SceneAs<Level>().Session.Level != startLevel) {
+                    RemoveSelf();
                 }
 
                 Collider = hitBox;
