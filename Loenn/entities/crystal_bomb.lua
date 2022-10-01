@@ -17,6 +17,15 @@ crystalBomb.placements = {
     }
 }
 
+crystalBomb.fieldInformation = {
+    respawnTime = {
+        minimumValue = 0.0
+    },
+    explodeTime = {
+        minimumValue = 0.0
+    }
+}
+
 local offsetY = -10
 local texture = "objects/cavern/crystalBomb/idle00"
 

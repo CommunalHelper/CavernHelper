@@ -131,7 +131,10 @@ namespace Celeste.Mod.CavernHelper {
 
                     explodeTimer += Engine.DeltaTime;
                     sprite.Play("crbomb", false, false);
-                    sprite.SetAnimationFrame((int)Math.Floor((double)(explodeTimer / maxExplodeTimer * 60f)));
+                    if (maxExplodeTimer > 0) {
+                        sprite.SetAnimationFrame((int)Math.Floor((double)(explodeTimer / maxExplodeTimer * 60f)));
+                    }
+                    
                     if (explodeTimer >= maxExplodeTimer) {
                         Explode();
                     }
