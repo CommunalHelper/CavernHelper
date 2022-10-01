@@ -24,8 +24,11 @@ public static class CavernHelperImports {
 typeof(CavernHelperImports).ModInterop();
 
 // Example usages
-Action<Vector2> onExplode = (position) => Logger.Log("MyMod", $"We were hit! Bomb exploded at: {position}");
-Component explodeCollider = GetCrystalBombExplosionCollider?.Invoke(onExplode, null);
+public void OnExplode(Vector2 position) {
+  Logger.Log("MyMod", $"We were hit! Bomb exploded at: {position}");
+}
+
+Component explodeCollider = GetCrystalBombExplosionCollider?.Invoke(OnExplode, null);
 if (explodeCollider != null) {
   myEntity.Add(explodeCollider);
 }
