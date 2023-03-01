@@ -1,4 +1,4 @@
-mods.cavern.name=Cavern Helper
+mods.CavernHelper.name=Cavern Helper
 
 # Crystal Bomb
 entities.cavern/crystalbomb.placements.name.bomb=Crystal Bomb
