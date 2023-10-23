@@ -109,6 +109,13 @@ namespace Celeste.Mod.CavernHelper {
                     field.Collidable = false;
                 }
 
+                foreach (CrystalBombExploderCollider collider in Scene.Tracker.GetComponents<CrystalBombExploderCollider>()) {
+                    if (collider.Check(this)) {
+                        Explode();
+                        return;
+                    }
+                }
+
                 if (!Hold.IsHeld) {
                     if (legacyMode) {
                         foreach (Spring spring in Scene.Entities.OfType<Spring>()) {

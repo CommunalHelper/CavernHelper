@@ -16,5 +16,11 @@ namespace Celeste.Mod.CavernHelper {
         public static Component GetCrystalBombExplosionCollider(Action<Vector2> action, Collider collider = null) {
             return new CrystalBombExplosionCollider(action, collider);
         }
+
+        // Creates and returns a CrystalBombExploderCollider as a Component.
+        //   Collider collider: the collider to use for the check. Defaults to the entity collider.
+        public static Component GetCrystalBombExploderCollider(Collider collider = null) {
+            return new CrystalBombExploderCollider(collider);
+        }
     }
 }
