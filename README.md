@@ -18,18 +18,29 @@ Basic usage guide and version info:
 public static class CavernHelperImports {
   // Added in v1.3.5
   public static Func<Action<Vector2>, Collider, Component> GetCrystalBombExplosionCollider;
+
+  // Added in v1.3.7
+  public static Func<Collider, Component> GetCrystalBombExploderCollider;
 }
 
 // Add to YourModule.Load()
 typeof(CavernHelperImports).ModInterop();
 
 // Example usages
+
+// GetCrystalBombExplosionCollider (this example removes the custom entity if it is caught in the blast range of the explosion)
 public void OnExplode(Vector2 position) {
-  Logger.Log("MyMod", $"We were hit! Bomb exploded at: {position}");
+  myEntity.RemoveSelf();
 }
 
-Component explodeCollider = GetCrystalBombExplosionCollider?.Invoke(OnExplode, null);
+Component explosionCollider = GetCrystalBombExplosionCollider?.Invoke(OnExplode, null);
 if (explodeCollider != null) {
-  myEntity.Add(explodeCollider);
+  myEntity.Add(explosionCollider);
+}
+
+// GetCrystalBombExploderCollider (this example causes the crystal bomb to explode if it touches the custom entity)
+Component exploderCollider = GetCrystalBombExploderCollider?.Invoke(myEntity.Collider);
+if (exploderCollider != null) {
+  myEntity.Add(exploderCollider);
 }
 ```
