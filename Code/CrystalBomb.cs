@@ -66,6 +66,7 @@ namespace Celeste.Mod.CavernHelper {
             Hold.OnHitSpring = new Func<Spring, bool>(HitSpring);
 
             Hold.SpeedGetter = () => Speed;
+            Hold.SpeedSetter = (speed) => Speed = speed;
 
             Add(new VertexLight(Collider.Center, Color.White, 1f, 32, 64));
             Add(new MirrorReflection());
