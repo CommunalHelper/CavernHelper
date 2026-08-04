@@ -27,7 +27,7 @@ crystalBomb.fieldInformation = {
 }
 
 local offsetY = -10
-local texture = "objects/cavern/crystalBomb/idle00"
+local texture = "objects/cavern/crystalbomb/idle00"
 
 function crystalBomb.sprite(room, entity)
     local sprite = drawableSprite.fromTexture(texture, entity)
